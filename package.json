@@ -10,6 +10,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.3",
+    "@prisma/adapter-neon": "^6.5.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
@@ -21,6 +23,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.0",
+    "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -29,7 +32,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/ws": "^8.5.13",
     "autoprefixer": "^10.4.21",
+    "bufferutil": "^4.0.8",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "postcss": "^8.5.4",
