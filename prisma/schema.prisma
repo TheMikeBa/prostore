@@ -37,8 +37,8 @@ model User {
   password      String?
   image         String?
   paymentMethod String?
-  Account       Account[]
-  Session       Session[]
+  account       Account[]
+  session       Session[]
 }
 
 model Account {
