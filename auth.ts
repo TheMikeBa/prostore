@@ -59,7 +59,8 @@ export const config = {
   callbacks: {
     async session({ session, user, token, trigger }: any) {
       // Map the token data to the session object
-      session.user.id = token.id;
+      // session.user.id = token.id;
+      session.user.id = token.sub;
       session.user.name = token.name; // 👈 Add this line
       session.user.role = token.role; // 👈 Add this line
 
