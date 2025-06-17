@@ -1,17 +1,15 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { ShippingAddress } from "@/types";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shippingAddressSchema } from "@/lib/validators";
-import { ControllerRenderProps } from "react-hook-form";
 import { shippingAddressDefaultValues } from "@/lib/constants";
 // import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import { updateUserAddress } from "@/lib/actions/user.actions";
 import CheckoutSteps from "@/components/shared/checkout-steps";
 import {
   Form,
@@ -24,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({
   address,
@@ -40,9 +39,28 @@ const ShippingAddressForm = ({
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (values) => {
-    console.log("🌜 values 🌛", values);
-    return;
+  const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
+    values
+  ) => {
+    startTransition(async () => {
+      const res = await updateUserAddress(values);
+
+      if (!res.success) {
+        // toast({
+        //   variant: "destructive",
+        //   description: res.message,
+        // });
+        toast.error(res.message || "Failed to update shipping address.", {
+          unstyled: true,
+          classNames: {
+            toast: "bg-red-500 text-white",
+          },
+        });
+        return;
+      }
+
+      router.push("/payment-method");
+    });
   };
 
   return (
