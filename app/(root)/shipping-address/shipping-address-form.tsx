@@ -10,7 +10,6 @@ import { shippingAddressDefaultValues } from "@/lib/constants";
 // import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import CheckoutSteps from "@/components/shared/checkout-steps";
 import {
   Form,
   FormControl,
