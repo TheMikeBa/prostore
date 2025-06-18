@@ -28,6 +28,7 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   paidAt: Date | null;
   isDelivered: Boolean;
   deliveredAt: Date | null;
-  orderItems: OrderItem[];
+  orderItems: OrderItem[]; // Traditional JS camelCasing
+  // orderitems: OrderItem[]; // Matches prisma schema reference
   user: { name: string; email: string };
 };
