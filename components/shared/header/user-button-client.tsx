@@ -71,7 +71,16 @@ const UserButton = ({ user }: UserButtonProps) => {
               </p>
             </div>
           </DropdownMenuLabel>
-
+          <DropdownMenuItem>
+            <Link href="/user/profile" className="w-full">
+              User Profile
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/user/orders" className="w-full">
+              Order History
+            </Link>
+          </DropdownMenuItem>
           {/* Updated DropdownMenuItem to call handleSignOut onClick */}
           {/* The form is removed as we are calling the server action directly */}
           <DropdownMenuItem
