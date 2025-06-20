@@ -26,7 +26,6 @@ export const paypal = {
 
     return handleResponse(response);
   },
-
   capturePayment: async function capturePayment(orderId: string) {
     const accessToken = await generateAccessToken();
     const url = `${base}/v2/checkout/orders/${orderId}/capture`;
@@ -65,9 +64,10 @@ async function generateAccessToken() {
 async function handleResponse(response: Response) {
   if (response.status === 200 || response.status === 201) {
     return response.json();
+  } else {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage);
   }
-  const errorMessage = await response.text();
-  throw new Error(errorMessage);
 }
 
 export { generateAccessToken };
