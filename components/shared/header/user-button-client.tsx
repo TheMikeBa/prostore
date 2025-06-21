@@ -27,6 +27,7 @@ interface UserButtonProps {
   user: {
     name?: string | null;
     email?: string | null;
+    role?: string | null;
   } | null;
 }
 
@@ -81,8 +82,13 @@ const UserButton = ({ user }: UserButtonProps) => {
               Order History
             </Link>
           </DropdownMenuItem>
-          {/* Updated DropdownMenuItem to call handleSignOut onClick */}
-          {/* The form is removed as we are calling the server action directly */}
+          {user.role === "admin" && (
+            <DropdownMenuItem>
+              <Link className="w-full" href="/admin/overview">
+                Admin
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onSelect={(event) => event.preventDefault()} // Prevent default closing behavior
             onClick={handleSignOut}
