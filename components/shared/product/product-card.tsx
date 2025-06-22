@@ -11,7 +11,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Link href={`/product/${product.slug}`}>
           <Image
             priority={true}
-            src={product.images![0]}
+            src={product.images.[0]}
             alt={product.name}
             className="aspect-square object-cover rounded"
             height={300}
