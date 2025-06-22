@@ -2,6 +2,7 @@ import { getOrderById } from "@/lib/actions/order.actions";
 import { notFound } from "next/navigation";
 import { ShippingAddress } from "@/types";
 import OrderDetailsTable from "./order-details-table";
+import { auth } from "@/auth";
 
 export const metadata = {
   title: "Order Details",
@@ -12,6 +13,7 @@ const OrderDetailsPage = async (props: {
     id: string;
   }>;
 }) => {
+  const session = await auth();
   const params = await props.params;
 
   const { id } = params;
@@ -27,6 +29,7 @@ const OrderDetailsPage = async (props: {
         orderItems: order.orderitems, // Re-assigning to match frontend type expectation
       }}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+      isAdmin={session?.user.role === "admin" || false} // Add this line
     />
   );
 };
