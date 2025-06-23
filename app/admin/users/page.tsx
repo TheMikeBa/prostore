@@ -10,11 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllUsers } from "@/lib/actions/user.actions";
 import { formatId } from "@/lib/utils";
-import { Badge } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
+import { getAllUsers, deleteUser } from "@/lib/actions/user.actions";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Admin Users",
@@ -52,13 +52,18 @@ const AdminUserPage = async (props: {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
-                  {user.role === "user" ? <p>User</p> : <p>Admin</p>}
+                  {user.role === "user" ? (
+                    <Badge variant="secondary">User</Badge>
+                  ) : (
+                    <Badge variant="default">Admin</Badge>
+                  )}
                 </TableCell>
                 <TableCell className="flex gap-1">
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/users/${user.id}`}>Edit</Link>
                   </Button>
                   {/* DELETE DIALOG HERE */}
+                  <DeleteDialog id={user.id} action={deleteUser} />
                 </TableCell>
               </TableRow>
             ))}
