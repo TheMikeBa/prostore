@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { updateUser } from "@/lib/actions/user.actions";
 
 const updateUserForm = ({
   user,
@@ -40,8 +41,24 @@ const updateUserForm = ({
     defaultValues: user,
   });
 
-  const onSubmit = () => {};
+  // Handle submit
+  const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
+    try {
+      const res = await updateUser({
+        ...values,
+        id: user.id,
+      });
 
+      if (!res.success) return toast.error(res.message);
+
+      toast.success(res.message);
+
+      form.reset();
+      router.push(`/admin/users`);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
   return (
     <Form {...form}>
       <form
