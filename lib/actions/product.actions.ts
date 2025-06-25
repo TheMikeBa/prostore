@@ -80,14 +80,21 @@ export async function getAllProducts({
   const ratingFilter =
     rating && rating !== "all" ? { rating: { gte: Number(rating) } } : {};
 
-  // Fetch products
   const data = await prisma.product.findMany({
     where: {
       ...queryFilter,
       ...categoryFilter,
-      ...priceFilter,
       ...ratingFilter,
+      ...priceFilter,
     },
+    orderBy:
+      sort === "lowest"
+        ? { price: "asc" }
+        : sort === "highest"
+        ? { price: "desc" }
+        : sort === "rating"
+        ? { rating: "desc" }
+        : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
