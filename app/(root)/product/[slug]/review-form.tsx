@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-// import { useForm, SubmitHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,11 +29,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-// import { toast } from "sonner";
-// import {
-//   createUpdateReview,
-//   getReviewByProductId,
-// } from "@/lib/actions/review.actions";
+import { toast } from "sonner";
+import {
+  createUpdateReview,
+  getReviewByProductId,
+} from "@/lib/actions/review.actions";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { z } from "zod";
@@ -42,10 +41,11 @@ import { StarIcon } from "lucide-react";
 
 type CustomerReview = z.infer<typeof insertReviewSchema>;
 
-const ReviewForm = ({}: // userId,
-// productId,
-// onReviewSubmitted,
-{
+const ReviewForm = ({
+  userId,
+  productId,
+  onReviewSubmitted,
+}: {
   userId: string;
   productId: string;
   onReviewSubmitted?: () => void;
