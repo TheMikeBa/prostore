@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Check, User } from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -40,7 +40,13 @@ const ReviewList = ({
 
   // Reload reviews when a review is submitted
   const reload = async () => {
-    console.log("review submitted");
+    try {
+      const res = await getReviews({ productId });
+      setReviews([...res.data]);
+    } catch (err) {
+      console.log(err);
+      toast.error("Error in fetching reviews");
+    }
   };
 
   return (
