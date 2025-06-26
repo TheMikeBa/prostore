@@ -43,8 +43,8 @@ export async function createUpdateReview(
         await tx.review.update({
           where: { id: reviewExists.id },
           data: {
-            description: review.description,
             title: review.title,
+            description: review.description,
             rating: review.rating,
           },
         });

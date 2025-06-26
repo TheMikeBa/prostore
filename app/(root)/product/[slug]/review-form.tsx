@@ -30,16 +30,11 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import {
-  createUpdateReview,
-  getReviewByProductId,
-} from "@/lib/actions/review.actions";
+import { createUpdateReview } from "@/lib/actions/review.actions";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { z } from "zod";
 import { StarIcon } from "lucide-react";
-
-type CustomerReview = z.infer<typeof insertReviewSchema>;
 
 const ReviewForm = ({
   userId,
@@ -48,17 +43,38 @@ const ReviewForm = ({
 }: {
   userId: string;
   productId: string;
-  onReviewSubmitted?: () => void;
+  onReviewSubmitted: () => void;
 }) => {
   const [open, setOpen] = useState(false);
 
-  const form = useForm<CustomerReview>({
+  const form = useForm<z.infer<typeof insertReviewSchema>>({
     resolver: zodResolver(insertReviewSchema),
     defaultValues: reviewFormDefaultValues,
   });
 
-  const handleOpenForm = () => {
+  // Open Form Handler
+  const handleOpenForm = async () => {
+    form.setValue("productId", productId);
+    form.setValue("userId", userId);
+
     setOpen(true);
+  };
+
+  // Form submit handler
+  const onSubmit: SubmitHandler<z.infer<typeof insertReviewSchema>> = async (
+    values
+  ) => {
+    const res = await createUpdateReview({ ...values, productId });
+
+    if (!res.success) {
+      return toast.error(res.message);
+    }
+
+    setOpen(false);
+
+    onReviewSubmitted();
+
+    toast(res.message);
   };
 
   return (
@@ -68,7 +84,7 @@ const ReviewForm = ({
       </Button>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
-          <form method="post">
+          <form method="post" onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle>Write a review</DialogTitle>
               <DialogDescription>
@@ -114,7 +130,7 @@ const ReviewForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a rating" />
+                          <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
