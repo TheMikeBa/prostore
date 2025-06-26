@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
@@ -42,7 +41,6 @@ const OrderDetailsTable = ({
   const {
     shippingAddress,
     orderItems,
-    // orderitems,
     itemsPrice,
     taxPrice,
     shippingPrice,
@@ -53,8 +51,6 @@ const OrderDetailsTable = ({
     isDelivered,
     deliveredAt,
   } = order;
-
-  //   const { toast } = useToast();
 
   // Checks the loading status of the PayPal script
   function PrintLoadingState() {
@@ -71,29 +67,30 @@ const OrderDetailsTable = ({
   // Creates a PayPal order
   const handleCreatePayPalOrder = async () => {
     const res = await createPayPalOrder(order.id);
-    if (!res.success)
-      // return toast({
-      //   description: res.message,
-      //   variant: "destructive",
-      // });
-      return toast.error(res.message);
+    // if (!res.success)
+    //   return toast.error(res.message);
+    // return res.data;
+    if (!res.success) {
+      toast.error(res.message);
+      return;
+    }
     return res.data;
   };
 
   // Approves a PayPal order
   const handleApprovePayPalOrder = async (data: { orderID: string }) => {
     const res = await approvePayPalOrder(order.id, data);
-    // toast({
-    //   description: res.message,
-    //   variant: res.success ? "default" : "destructive",
-    // });
-    res.success ? toast.success(res.message) : toast.error(res.message);
+    // res.success ? toast.success(res.message) : toast.error(res.message);
+    if (res.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
   };
 
   // Button To mark the order as paid
   const MarkAsPaidButton = () => {
     const [isPending, startTransition] = useTransition();
-    // const { toast } = useToast();
 
     return (
       <Button
@@ -102,11 +99,12 @@ const OrderDetailsTable = ({
         onClick={() =>
           startTransition(async () => {
             const res = await updateOrderToPaidByCOD(order.id);
-            // toast({
-            //   variant: res.success ? "default" : "destructive",
-            //   description: res.message,
-            // });
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            // res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >
@@ -118,7 +116,6 @@ const OrderDetailsTable = ({
   // Button To mark the order as delivered
   const MarkAsDeliveredButton = () => {
     const [isPending, startTransition] = useTransition();
-    // const { toast } = useToast();
     return (
       <Button
         type="button"
@@ -126,11 +123,12 @@ const OrderDetailsTable = ({
         onClick={() =>
           startTransition(async () => {
             const res = await deliverOrder(order.id);
-            // toast({
-            //   variant: res.success ? "default" : "destructive",
-            //   description: res.message,
-            // });
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            // res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >

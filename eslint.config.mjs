@@ -29,6 +29,14 @@ const eslintConfig = [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "warn", // Changed from "error" or default to "warn"
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ];
