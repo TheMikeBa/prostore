@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import { USER_ROLES } from "@/lib/constants";
 import { updateUserSchema } from "@/lib/validators";
@@ -28,13 +27,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { updateUser } from "@/lib/actions/user.actions";
 
-const updateUserForm = ({
+const UpdateUserForm = ({
   user,
 }: {
   user: z.infer<typeof updateUserSchema>;
 }) => {
   const router = useRouter();
-  //   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof updateUserSchema>>({
     resolver: zodResolver(updateUserSchema),
@@ -168,4 +166,4 @@ const updateUserForm = ({
   );
 };
 
-export default updateUserForm;
+export default UpdateUserForm;

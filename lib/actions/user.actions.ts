@@ -103,7 +103,7 @@ export async function updateUserAddress(data: ShippingAddress) {
     const session = await auth();
 
     const currentUser = await prisma.user.findFirst({
-      where: { id: session?.user?.id! },
+      where: { id: session?.user?.id },
     });
 
     if (!currentUser) throw new Error("User not found");
@@ -131,7 +131,7 @@ export async function updateUserPaymentMethod(
   try {
     const session = await auth();
     const currentUser = await prisma.user.findFirst({
-      where: { id: session?.user?.id! },
+      where: { id: session?.user?.id },
     });
     if (!currentUser) throw new Error("User not found");
 
