@@ -8,12 +8,13 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem, PaymentResult } from "@/types";
 import { convertToPlainObject } from "../utils";
 import { revalidatePath } from "next/cache";
 import { paypal } from "../paypal";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
+import { sendPurchaseReceipt } from "@/email";
 
 // Create an order
 export async function createOrder() {
@@ -261,6 +262,17 @@ export async function updateOrderToPaid({
   if (!updatedOrder) {
     throw new Error("Order not found");
   }
+
+  // Send the purchase receipt email with the updated order
+  sendPurchaseReceipt({
+    order: {
+      ...updatedOrder,
+      orderItems: updatedOrder.orderitems,
+      ...updatedOrder,
+      shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+      paymentResult: updatedOrder.paymentResult as PaymentResult,
+    },
+  });
 }
 
 // Get User Orders

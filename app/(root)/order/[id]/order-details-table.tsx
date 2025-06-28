@@ -1,5 +1,4 @@
 "use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,20 +12,20 @@ import {
 import { toast } from "sonner";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { useTransition } from "react";
 import {
   PayPalButtons,
   PayPalScriptProvider,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 import {
-  approvePayPalOrder,
   createPayPalOrder,
-  deliverOrder,
+  approvePayPalOrder,
   updateOrderToPaidByCOD,
+  deliverOrder,
 } from "@/lib/actions/order.actions";
-import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import StripePayment from "./stripe-payment";
 
@@ -36,7 +35,8 @@ const OrderDetailsTable = ({
   isAdmin,
   stripeClientSecret,
 }: {
-  order: Order;
+  // order: Order;
+  order: Omit<Order, "paymentResult">;
   paypalClientId: string;
   isAdmin: boolean;
   stripeClientSecret: string | null;
@@ -45,13 +45,13 @@ const OrderDetailsTable = ({
     shippingAddress,
     orderItems,
     itemsPrice,
-    taxPrice,
     shippingPrice,
+    taxPrice,
     totalPrice,
     paymentMethod,
+    isDelivered,
     isPaid,
     paidAt,
-    isDelivered,
     deliveredAt,
   } = order;
 
@@ -59,6 +59,7 @@ const OrderDetailsTable = ({
   function PrintLoadingState() {
     const [{ isPending, isRejected }] = usePayPalScriptReducer();
     let status = "";
+
     if (isPending) {
       status = "Loading PayPal...";
     } else if (isRejected) {
