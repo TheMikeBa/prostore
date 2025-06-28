@@ -33,6 +33,7 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   orderItems: OrderItem[]; // Traditional JS camelCasing
   // orderitems: OrderItem[]; // Matches prisma schema reference
   user: { name: string; email: string };
+  paymentResult: PaymentResult;
 };
 
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
